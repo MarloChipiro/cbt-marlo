@@ -240,7 +240,8 @@
             // If no token, redirect to the login page and stop script execution
             window.location.href = 'index.html'; 
         }
-
+        const API_BASE_URL = 'https://cbt-marlo.onrender.com';
+		
         // Store charts, map, and heatmap layers instance globally for updates
         let hourlyActivityChart, demographicsChart, map;
         let heatLayers = {};
