@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 
 const app = express();
 const PORT =  process.env.PORT;
-const JWT_SECRET = '4b28982b67ddc629bef7125e09c4e63a; // Change this to a secure, long, random key!
+const JWT_SECRET = 'm1a2r3l4o5; // Change this to a secure, long, random key!
 
 // Middleware setup
 const allowedOrigins = [
@@ -369,5 +369,5 @@ app.get('/api/activity/csv', authenticateToken, async (req, res) => {
 });
 // Start the server
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on https://localhost:${PORT}`);
 });
