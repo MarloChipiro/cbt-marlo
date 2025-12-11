@@ -240,7 +240,6 @@
             // If no token, redirect to the login page and stop script execution
             window.location.href = 'index.html'; 
         }
-
 		const API_BASE_URL = 'https://cbt-marlo.onrender.com';
 		
         // Store charts, map, and heatmap layers instance globally for updates
@@ -838,7 +837,6 @@
 
         // Get the CSV text data from the response
         const csvData = await response.text();
-        
         // Create a blob and trigger a download
         const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
         const url = window.URL.createObjectURL(blob);
@@ -855,9 +853,8 @@
         console.error('Export failed:', error);
         showMessage("Export failed. Check server console for details or ensure the server is running.", true);
     }
-});
         });
     </script>
 </body>
-
 </html>
+
