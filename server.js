@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 
 const app = express();
 const PORT =  process.env.PORT;
-const JWT_SECRET = 'm1a2r3l4o5c6h7i8p9i10r11o; // Change this to a secure, long, random key!
+const JWT_SECRET = 'm1a2r3l4o5c6h7i8p9i10r11o@123ewrfer!4567#890;
 
 // Middleware setup
 const allowedOrigins = [
@@ -372,6 +372,7 @@ app.listen(PORT, () => {
     console.log(`Server is running on https://localhost:${PORT}`);
 
 });
+
 
 
 
