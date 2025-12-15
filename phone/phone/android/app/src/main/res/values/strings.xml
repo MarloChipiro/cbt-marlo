@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Consumer Behavior Tracker</string>
+    <string name="title_activity_main">Consumer Behavior Tracker</string>
+    <string name="package_name">uk.infy.marlochipiro31.consumer</string>
+    <string name="custom_url_scheme">uk.infy.marlochipiro31.consumer</string>
+</resources>

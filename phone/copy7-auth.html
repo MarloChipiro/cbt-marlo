@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consumer Behavior Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                        'primary-dark': '#4B4BC1',
+                    }
+                }
+            },
+            darkMode: 'class'
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-extra-markers@1.0.1/dist/js/leaflet.extra-markers.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+
+    
+    <style>
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        .map-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            border: 2px solid #e5e7eb;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        #tooltip {
+            position: absolute;
+            background-color: #333;
+            color: white;
+            padding: 5px;
+            border-radius: 4px;
+            pointer-events: none;
+            display: none;
+            z-index: 1000;
+        }
+        .leaflet-heatmap-layer {
+          opacity: 0.8;
+        }
+        .map-legend {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            font-size: 14px;
+        }
+        .map-legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 font-sans leading-normal tracking-normal text-gray-800 dark:text-gray-200">
+
+    <!-- Login/Register Modal -->
+    <div id="authModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50">
+        <div class="relative p-8 bg-white dark:bg-gray-800 w-96 rounded-lg shadow-xl">
+            <h3 class="text-2xl font-bold mb-4 text-center">Login or Register</h3>
+            <form id="authForm" class="space-y-4">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Username</label>
+                    <input type="text" id="username" name="username" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-dark focus:ring focus:ring-primary-dark focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600">
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+                    <input type="password" id="password" name="password" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-dark focus:ring focus:ring-primary-dark focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600">
+                </div>
+                <div class="flex justify-between space-x-2">
+                    <button type="button" id="registerBtn" class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-dark">Register</button>
+                    <button type="submit" id="loginBtn" class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600">Login</button>
+                </div>
+            </form>
+            <p id="authMessage" class="mt-4 text-center text-sm font-medium"></p>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Content -->
+    <div id="dashboard" class="container mx-auto p-4 hidden">
+        <header class="flex flex-col sm:flex-row justify-between items-center py-4 mb-8 border-b-2 border-gray-200 dark:border-gray-700">
+            <h1 class="text-3xl font-extrabold text-primary mb-4 sm:mb-0">Consumer Dashboard</h1>
+            <div class="flex items-center space-x-4">
+                <button id="addActivityBtn" class="bg-primary text-white py-2 px-4 rounded-lg shadow hover:bg-primary-dark transition duration-300 text-sm">Add Activity Data</button>
+                <button id="addDemographicsBtn" class="bg-primary text-white py-2 px-4 rounded-lg shadow hover:bg-primary-dark transition duration-300 text-sm">Add Demographics Data</button>
+                <button id="logoutBtn" class="bg-red-500 text-white py-2 px-4 rounded-lg shadow hover:bg-red-600 transition duration-300 text-sm">Logout</button>
+            </div>
+        </header>
+
+        <!-- Main Metrics Section -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- Total Consumers Card -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Consumers</p>
+                        <p id="totalConsumers" class="text-3xl font-bold mt-1 text-gray-900 dark:text-gray-100">0</p>
+                    </div>
+                    <i class="fas fa-users text-primary text-3xl opacity-75"></i>
+                </div>
+            </div>
+
+            <!-- Active Locations Card -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Active Locations</p>
+                        <p id="activeLocations" class="text-3xl font-bold mt-1 text-gray-900 dark:text-gray-100">0</p>
+                    </div>
+                    <i class="fas fa-map-marker-alt text-primary text-3xl opacity-75"></i>
+                </div>
+            </div>
+
+            <!-- Conversion Rate Card -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Conversion Rate</p>
+                        <p id="conversionRate" class="text-3xl font-bold mt-1 text-gray-900 dark:text-gray-100">7.2%</p>
+                    </div>
+                    <i class="fas fa-chart-line text-primary text-3xl opacity-75"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts and Map Section -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Hourly Activity Chart -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+                <h2 class="text-xl font-bold mb-4">Hourly Activity</h2>
+                <div class="chart-container">
+                    <canvas id="hourlyActivityChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Demographics Chart -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+                <h2 class="text-xl font-bold mb-4">Demographics</h2>
+                <div class="chart-container">
+                    <canvas id="demographicsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recommendations and Overview Map Section -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Recommendations Card -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+                <h2 class="text-xl font-bold mb-4">Recommendations</h2>
+                <div class="space-y-4">
+                    <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                        <h3 class="font-semibold text-lg text-primary">Optimize Peak Hours</h3>
+                        <p class="text-sm mt-1">Focus on staffing and promotions between <span id="peakHours" class="font-bold"></span> to capitalize on high traffic.</p>
+                    </div>
+                    <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                        <h3 class="font-semibold text-lg text-primary">Target Key Demographics</h3>
+                        <p class="text-sm mt-1">Develop marketing campaigns tailored to the top demographic group to boost engagement.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Overview Map Card -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+                <h2 class="text-xl font-bold mb-4">Overview Map</h2>
+                <div class="flex justify-end mb-2 space-x-2">
+                    <button id="toggleMapViewBtn" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 py-1 px-3 rounded-md shadow hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-300 text-xs">Switch to Clusters</button>
+                </div>
+                <div id="map" class="map-container">
+                    <div id="mapLegend" class="map-legend dark:bg-gray-800 dark:text-white">
+                        <h4 class="font-bold mb-2">Item Categories</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Data Management Section -->
+        <section class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+            <h2 class="text-xl font-bold mb-4">Data Management</h2>
+            <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                <button id="exportJsonBtn" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 py-2 px-4 rounded-lg shadow hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-300 text-sm">Export to JSON</button>
+                <button id="exportCsvBtn" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 py-2 px-4 rounded-lg shadow hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-300 text-sm">Export to CSV</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modals (Add Data Forms) -->
+    <!-- Add Activity Data Modal -->
+    <div id="addActivityModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50 hidden">
+        <div class="relative p-8 bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-lg">
+            <button class="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300" onclick="closeActivityModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="text-2xl font-bold mb-4">Add Consumer Activity Data</h3>
+            <!-- Geolocation Status Message -->
+            <p id="geolocationStatus" class="text-sm mb-4 text-center"></p>
+            <form id="activityForm" class="space-y-4">
+                <div>
+                    <label for="activityTime" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Time of Day</label>
+                    <input type="text" id="activityTime" name="activityTime" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-dark focus:ring focus:ring-primary-dark focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600">
+                </div>
+                <div>
+                    <label for="activityLat" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Location Latitude</label>
+                    <input type="number" step="any" id="activityLat" name="activityLat" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-dark focus:ring focus:ring-primary-dark focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600">
+                </div>
+                <div>
+                    <label for="activityLon" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Location Longitude</label>
+                    <input type="number" step="any" id="activityLon" name="activityLon" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-dark focus:ring focus:ring-primary-dark focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600">
+                </div>
+                <div>
+                    <label for="activityCategory" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Item Category</label>
+                    <select id="activityCategory" required class="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                       <option value="">Select Item Category</option>
+                       <option value="Electronics">Electronics</option>
+                       <option value="Apparel">Apparel</option>
+                       <option value="Groceries">Groceries</option>
+                       <option value="Home Goods">Home Goods</option>
+                       <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="activityBehaviour" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Behavior</label>
+                    <select id="activityBehaviour" required class="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                       <option value="">Select Behavior</option>
+                       <option value="Browsing">Browsing</option>
+		               <option value="Purchasing">Purchasing</option>
+	                </select>	
+                </div>
+                <div>
+                    <label for="activityCount" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Consumer Count</label>
+                    <input type="number" id="activityCount" name="activityCount" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-dark focus:ring focus:ring-primary-dark focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600">
+                </div>
+                <div>
+                    <label for="activityAge" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Age Group</label>
+                    <input type="text" id="activityAge" name="activityAge" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-dark focus:ring focus:ring-primary-dark focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600">
+                </div>              
+				<div>
+                    <label for="activityReturned" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Returned Item</label>
+                    <input type="text" id="activityReturned" name="activityReturned" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-dark focus:ring focus:ring-primary-dark focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600">
+                </div>
+                <div>
+                    <label for="activityItems" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Items Purchased</label>
+                    <input type="text" id="activityItems" name="activityItems" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-dark focus:ring focus:ring-primary-dark focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600">
+                </div>
+                <button type="submit" class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-dark">Add Data</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Demographics Data Modal -->
+    <div id="addDemographicsModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50 hidden">
+        <div class="relative p-8 bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-lg">
+            <button class="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300" onclick="closeDemographicsModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="text-2xl font-bold mb-4">Add Demographics Data</h3>
+            <form id="demographicsForm" class="space-y-4">
+                <div id="demographics-inputs" class="space-y-2">
+                    <!-- Dynamic input fields will be added here -->
+                </div>
+                <button type="button" id="addDemographicsField" class="text-primary text-sm font-semibold hover:text-primary-dark">
+                    <i class="fas fa-plus-circle mr-1"></i> Add another age group
+                </button>
+                <button type="submit" class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-dark">Save Data</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Store charts, map, and heatmap layers instance globally for updates
+        let hourlyActivityChart, demographicsChart, map;
+        let heatLayers = {};
+        let clusterLayers = {};
+        let currentMapMode = 'heatmap'; // 'heatmap' or 'cluster'
+        const categoryColors = ['#5D5CDE', '#34D399', '#FBBF24', '#F87171', '#60A5FA', '#8B5CF6'];
+
+        // ---- API UTILITIES ----
+        async function fetchWithAuth(url, options = {}) {
+            const token = localStorage.getItem('token');
+            const headers = {
+                ...options.headers,
+                'Content-Type': 'application/json'
+            };
+
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+
+            const response = await fetch(url, { ...options, headers });
+            if (response.status === 401 || response.status === 403) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('userId');
+                document.getElementById('authModal').classList.remove('hidden');
+                document.getElementById('dashboard').classList.add('hidden');
+                throw new Error('Unauthorized');
+            }
+            return response;
+        }
+
+        // ---- MODAL AND UI FUNCTIONS ----
+        function showActivityModal() {
+            document.getElementById('addActivityModal').classList.remove('hidden');
+            // Attempt to get current geolocation when the modal is shown
+            getGeolocation();
+        }
+        function closeActivityModal() { document.getElementById('addActivityModal').classList.add('hidden'); }
+        function showDemographicsModal() {
+            document.getElementById('addDemographicsModal').classList.remove('hidden');
+            const inputsContainer = document.getElementById('demographics-inputs');
+            inputsContainer.innerHTML = '';
+            addDemographicsField();
+        }
+        function closeDemographicsModal() { document.getElementById('addDemographicsModal').classList.add('hidden'); }
+        function addDemographicsField() {
+            const inputsContainer = document.getElementById('demographics-inputs');
+            const newField = document.createElement('div');
+            newField.className = 'flex space-x-2 items-center';
+            newField.innerHTML = `
+                <input type="text" name="demographicsAgeGroup" placeholder="Age Group (e.g., 18-25)" class="w-2/3 rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:border-gray-600">
+                <input type="number" name="demographicsPercentage" placeholder="Percentage" class="w-1/3 rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:border-gray-600">
+                <button type="button" class="text-red-500 hover:text-red-700 remove-field"><i class="fas fa-minus-circle"></i></button>
+            `;
+            inputsContainer.appendChild(newField);
+            newField.querySelector('.remove-field').addEventListener('click', () => newField.remove());
+        }
+
+        // Custom message box to replace alert()
+        function showMessage(message, isError = false) {
+            const messageBox = document.createElement('div');
+            messageBox.innerHTML = `
+                <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50">
+                    <div class="relative p-8 bg-white dark:bg-gray-800 rounded-lg shadow-xl w-80 text-center">
+                        <h3 class="text-xl font-bold mb-4">${isError ? 'Error' : 'Info'}</h3>
+                        <p>${message}</p>
+                        <button onclick="this.parentElement.parentElement.remove()" class="mt-4 py-2 px-4 rounded-md bg-primary text-white hover:bg-primary-dark">Close</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(messageBox);
+        }
+
+        // ---- GEOLOCATION FUNCTIONS ----
+        function getGeolocation() {
+            const statusMessage = document.getElementById('geolocationStatus');
+            statusMessage.textContent = 'Attempting to find your location...';
+            statusMessage.className = 'text-sm mb-4 text-center text-gray-500 dark:text-gray-400';
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        document.getElementById('activityLat').value = position.coords.latitude;
+                        document.getElementById('activityLon').value = position.coords.longitude;
+                        statusMessage.textContent = 'Location found successfully! You can edit the values if needed.';
+                        statusMessage.className = 'text-sm mb-4 text-center text-green-500 dark:text-green-400';
+                    },
+                    (error) => {
+                        console.error('Geolocation error:', error);
+                        statusMessage.textContent = 'Could not find your location. Please enter coordinates manually.';
+                        statusMessage.className = 'text-sm mb-4 text-center text-red-500 dark:text-red-400';
+                    }
+                );
+            } else {
+                statusMessage.textContent = 'Geolocation is not supported by your browser.';
+                statusMessage.className = 'text-sm mb-4 text-center text-red-500 dark:text-red-400';
+            }
+        }
+
+        // ---- CHART FUNCTIONS ----
+        function initCharts() {
+            const hourlyCtx = document.getElementById('hourlyActivityChart').getContext('2d');
+            hourlyActivityChart = new Chart(hourlyCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Consumers',
+                        data: [],
+                        borderColor: '#5D5CDE',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+
+            const demoCtx = document.getElementById('demographicsChart').getContext('2d');
+            demographicsChart = new Chart(demoCtx, {
+                type: 'pie',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Demographics',
+                        data: [],
+                        backgroundColor: [
+                            '#5D5CDE', '#34D399', '#FBBF24', '#F87171', '#60A5FA', '#8B5CF6'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        function updateHourlyChart(data) {
+            const hourlyCounts = data.reduce((acc, curr) => {
+                const hour = new Date(`2000/01/01 ${curr.time}`).getHours();
+                const label = `${hour}:00`;
+                acc[label] = (acc[label] || 0) + curr.count;
+                return acc;
+            }, {});
+            const labels = Object.keys(hourlyCounts).sort();
+            const counts = labels.map(label => hourlyCounts[label]);
+            hourlyActivityChart.data.labels = labels;
+            hourlyActivityChart.data.datasets[0].data = counts;
+            hourlyActivityChart.update();
+        }
+
+        function updateDemographicsChart(data) {
+            const labels = data.map(d => d.ageGroup);
+            const percentages = data.map(d => d.percentage);
+            demographicsChart.data.labels = labels;
+            demographicsChart.data.datasets[0].data = percentages;
+            demographicsChart.update();
+        }
+
+        // ---- MAP FUNCTIONS ----
+        function initOverviewMap() {
+            if (map) { map.remove(); }
+            map = L.map('map', {center: [34.052235, -118.243683], zoom: 12});
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+        }
+
+        function clearMapLayers() {
+            map.eachLayer(layer => {
+                if (layer instanceof L.HeatLayer || layer instanceof L.MarkerClusterGroup) {
+                    map.removeLayer(layer);
+                }
+            });
+        }
+        
+        function updateMap(activityData) {
+            console.log("Updating map with data:", activityData);
+    
+            // Clear previous layers and legend
+            clearMapLayers();
+            heatLayers = {};
+            clusterLayers = {};
+            const legend = document.getElementById('mapLegend');
+            legend.innerHTML = '<h4 class="font-bold mb-2">Item Categories</h4>';
+
+            const validPoints = activityData.filter(d => d.lat && d.lon && d.count > 0);
+            if (validPoints.length === 0) {
+                console.log("No activity data with coordinates and count > 0 to display on map.");
+                legend.innerHTML += `<p class="text-xs text-gray-500 dark:text-gray-400">No data available to display.</p>`;
+                return;
+            }
+
+            const groupedData = validPoints.reduce((acc, curr) => {
+           // Use 'other' if category is missing or null, and sanitize the name
+                const rawCategory = curr.category || 'Other';
+                const category = rawCategory.trim().toLowerCase().replace(/\s/g, '-'); 
+        
+            if (!acc[category]) {
+                acc[category] = { heat: [], cluster: [] };
+            }
+                acc[category].heat.push([curr.lat, curr.lon, curr.count]);
+                acc[category].cluster.push(L.marker([curr.lat, curr.lon]).bindPopup(
+                    `<b>Category:</b> ${curr.category}<br><b>Count:</b> ${curr.count}<br><b>Behavior:</b> ${curr.behaviour || 'N/A'}`
+                ));
+            return acc;
+        }, {});
+
+        const categories = Object.keys(groupedData).sort();
+        const colors = categoryColors.slice(0, categories.length);
+
+         // 1. Calculate map bounds based on all points
+        const allPoints = validPoints.map(d => [d.lat, d.lon]);
+        if (allPoints.length > 0) {
+            const bounds = L.latLngBounds(allPoints);
+            map.fitBounds(bounds, { padding: [50, 50] }); // Zoom map to fit all data points
+        }
+
+        categories.forEach((category, index) => {
+            const categoryLabel = Object.keys(groupedData)[Object.keys(groupedData).indexOf(category)];
+        
+            // Heat Layer Creation
+            const heatLayer = L.heatLayer(groupedData[category].heat, {
+                radius: 25,
+                blur: 15,
+                gradient: { 0.4: colors[index % colors.length], 0.6: colors[index % colors.length], 1.0: colors[index % colors.length] }
+            });
+            heatLayers[category] = heatLayer;
+
+            // Cluster Layer Creation
+            const clusterGroup = L.markerClusterGroup();
+            clusterGroup.addLayers(groupedData[category].cluster);
+            clusterLayers[category] = clusterGroup;
+
+            // Create and add legend item
+            const legendItem = document.createElement('div');
+            legendItem.className = 'map-legend-item';
+            legendItem.innerHTML = `
+                <input type="checkbox" id="legend-${category}" data-category="${category}" checked class="mr-2">
+                <div class="w-4 h-4 rounded-full" style="background-color: ${colors[index % colors.length]};"></div>
+                <label for="legend-${category}" class="text-sm cursor-pointer ml-2">${categoryLabel.replace(/-/g, ' ').toUpperCase()}</label>
+            `;
+            legend.appendChild(legendItem);
+
+            // Add event listener to the checkbox
+            legendItem.querySelector('input').addEventListener('change', updateMapDisplay);
+        });
+
+        // Initially display layers based on the current mode and checkbox state (which are checked by default)
+        updateMapDisplay();
+    }
+        // New function to update the map based on current state
+        function updateMapDisplay() {
+            const toggleButton = document.getElementById('toggleMapViewBtn');
+            clearMapLayers();
+
+            const checkboxes = document.querySelectorAll('#mapLegend input[type="checkbox"]');
+
+            toggleButton.textContent = currentMapMode === 'heatmap' ? 'Switch to Clusters' : 'Switch to Heatmap';
+
+            checkboxes.forEach(checkbox => {
+                const category = checkbox.dataset.category;
+                if (checkbox.checked) {
+                    if (currentMapMode === 'heatmap' && heatLayers[category]) {
+                        map.addLayer(heatLayers[category]);
+                    } else if (currentMapMode === 'cluster' && clusterLayers[category]) {
+                        map.addLayer(clusterLayers[category]);
+                    }
+                }
+            });
+        }
+
+        function toggleMapView() {
+            currentMapMode = currentMapMode === 'heatmap' ? 'cluster' : 'heatmap';
+            updateMapDisplay();
+        }
+
+        // ---- RECOMMENDATIONS FUNCTIONS ----
+        function updateRecommendations(hourlyData) {
+            const hourlyCounts = hourlyData.reduce((acc, curr) => {
+                const hour = new Date(`2000/01/01 ${curr.time}`).getHours();
+                const label = `${hour}:00`;
+                acc[label] = (acc[label] || 0) + curr.count;
+                return acc;
+            }, {});
+
+            if (Object.keys(hourlyCounts).length > 0) {
+                let peakHours = [];
+                let maxCount = 0;
+
+                for (const time in hourlyCounts) {
+                    if (hourlyCounts[time] > maxCount) {
+                        maxCount = hourlyCounts[time];
+                        peakHours = [time];
+                    } else if (hourlyCounts[time] === maxCount) {
+                        peakHours.push(time);
+                    }
+                }
+
+                document.getElementById('peakHours').textContent = peakHours.join(' & ');
+            } else {
+                document.getElementById('peakHours').textContent = 'N/A';
+            }
+        }
+
+        // ---- DATA AND API HANDLERS ----
+        async function fetchDashboardData() {
+            try {
+                const response = await fetchWithAuth('http://localhost:3000/api/dashboard');
+                let data = await response.json();
+
+                // Fallback data for testing if backend is not providing location data
+                if (data.activity.length === 0) {
+                    data.activity = [
+                        { time: '09:30', lat: 34.0522, lon: -118.2437, category: 'Food', count: 15, age: '25-34', behaviour: 'Browse', items: 'Tacos, Burrito' },
+                        { time: '12:00', lat: 34.0532, lon: -118.2450, category: 'Retail', count: 20, age: '18-24', behaviour: 'Purchase', items: 'Shirt, Jeans' },
+                        { time: '13:00', lat: 34.0550, lon: -118.2420, category: 'Food', count: 10, age: '35-44', behaviour: 'Purchase', items: 'Coffee, Pastry' },
+                        { time: '17:45', lat: 34.0515, lon: -118.2460, category: 'Entertainment', count: 5, age: '18-24', behaviour: 'Browse', items: 'Tickets' },
+                        { time: '18:30', lat: 34.0528, lon: -118.2445, category: 'Food', count: 18, age: '25-34', behaviour: 'Purchase', items: 'Pizza, Soda' },
+                        { time: '20:00', lat: 34.0540, lon: -118.2410, category: 'Retail', count: 12, age: '45-54', behaviour: 'Browse', items: 'Shoes' },
+                    ];
+                }
+
+                document.getElementById('totalConsumers').textContent = data.dashboardMetrics.totalConsumers;
+                document.getElementById('activeLocations').textContent = data.dashboardMetrics.activeLocations;
+                document.getElementById('conversionRate').textContent = data.dashboardMetrics.conversionRate;
+
+                updateHourlyChart(data.activity);
+                updateDemographicsChart(data.demographics);
+                updateRecommendations(data.activity);
+                updateMap(data.activity);
+            } catch (error) {
+                console.error('Failed to fetch dashboard data:', error);
+            }
+        }
+
+        async function submitActivityData(e) {
+            e.preventDefault();
+            const form = document.getElementById('activityForm'); // Get the form element
+            const lat = parseFloat(document.getElementById('activityLat').value);
+            const lon = parseFloat(document.getElementById('activityLon').value);
+            const newActivity = {
+                time: document.getElementById('activityTime').value,
+                lat: lat,
+                lon: lon,
+                category: document.getElementById('activityCategory').value,
+                count: parseInt(document.getElementById('activityCount').value),
+                age: document.getElementById('activityAge').value,           
+                behaviour: document.getElementById('activityBehaviour').value, 
+                items: document.getElementById('activityItems').value
+            };
+
+            try {
+                const response = await fetchWithAuth('http://localhost:3000/api/activity', {
+                    method: 'POST',
+                    body: JSON.stringify(newActivity)
+                });
+                const result = await response.json();
+                console.log(result.message);
+                await fetchDashboardData();
+                closeActivityModal();
+        
+                // --- THE KEY FIX: RESET THE FORM INPUTS ---
+                form.reset(); 
+        
+                if (!isNaN(lat) && !isNaN(lon)) {
+                    map.flyTo([lat, lon], 15);
+                }
+            } catch (error) {
+                console.error('Error adding activity:', error);
+            }
+        }
+
+        async function submitDemographicsData(e) {
+            e.preventDefault();
+            const newDemographics = [];
+            const rows = document.querySelectorAll('#demographics-inputs > div');
+            rows.forEach(row => {
+                const ageGroup = row.querySelector('[name="demographicsAgeGroup"]').value;
+                const percentage = parseFloat(row.querySelector('[name="demographicsPercentage"]').value);
+                if (ageGroup && !isNaN(percentage)) {
+                    newDemographics.push({ ageGroup, percentage });
+                }
+            });
+
+            try {
+                const response = await fetchWithAuth('http://localhost:3000/api/demographics', {
+                    method: 'POST',
+                    body: JSON.stringify(newDemographics)
+                });
+                const result = await response.json();
+                console.log(result.message);
+                await fetchDashboardData();
+                closeDemographicsModal();
+            } catch (error) {
+                console.error('Error updating demographics:', error);
+            }
+        }
+
+        // ---- INITIALIZATION AND EVENT LISTENERS ----
+        document.addEventListener('DOMContentLoaded', function() {
+            initCharts();
+            initOverviewMap();
+
+            const token = localStorage.getItem('token');
+            if (token) {
+                document.getElementById('authModal').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                map.invalidateSize();
+                fetchDashboardData();
+            } else {
+                document.getElementById('authModal').classList.remove('hidden');
+            }
+
+            document.getElementById('authForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const authMessage = document.getElementById('authMessage');
+
+                try {
+                    const response = await fetch('http://localhost:3000/api/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, password })
+                    });
+                    const result = await response.json();
+                    if (response.ok) {
+                        localStorage.setItem('token', result.token);
+                        localStorage.setItem('userId', result.userId);
+                        document.getElementById('authModal').classList.add('hidden');
+                        document.getElementById('dashboard').classList.remove('hidden');
+                        map.invalidateSize();
+                        fetchDashboardData();
+                    } else {
+                        authMessage.textContent = result.message;
+                        authMessage.className = 'mt-4 text-center text-sm font-medium text-red-500';
+                    }
+                } catch (error) {
+                    authMessage.textContent = 'Failed to connect to server.';
+                    authMessage.className = 'mt-4 text-center text-sm font-medium text-red-500';
+                }
+            });
+
+            document.getElementById('registerBtn').addEventListener('click', async function() {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const authMessage = document.getElementById('authMessage');
+
+                try {
+                    const response = await fetch('http://localhost:3000/api/register', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, password })
+                    });
+                    const result = await response.json();
+                    authMessage.textContent = result.message;
+                    authMessage.className = 'mt-4 text-center text-sm font-medium ' + (response.ok ? 'text-green-500' : 'text-red-500');
+                } catch (error) {
+                    authMessage.textContent = 'Failed to connect to server.';
+                    authMessage.className = 'mt-4 text-center text-sm font-medium text-red-500';
+                }
+            });
+
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                localStorage.removeItem('token');
+                localStorage.removeItem('userId');
+                document.getElementById('dashboard').classList.add('hidden');
+                document.getElementById('authModal').classList.remove('hidden');
+                document.getElementById('peakHours').textContent = '';
+            });
+
+            document.getElementById('addActivityBtn').addEventListener('click', showActivityModal);
+            document.getElementById('addDemographicsBtn').addEventListener('click', showDemographicsModal);
+            document.getElementById('activityForm').addEventListener('submit', submitActivityData);
+            document.getElementById('demographicsForm').addEventListener('submit', submitDemographicsData);
+            document.getElementById('addDemographicsField').addEventListener('click', addDemographicsField);
+            document.getElementById('toggleMapViewBtn').addEventListener('click', toggleMapView);
+
+            function exportData(format) {
+                const messageBox = document.createElement('div');
+                messageBox.innerHTML = `
+                    <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50">
+                        <div class="relative p-8 bg-white dark:bg-gray-800 rounded-lg shadow-xl w-80 text-center">
+                            <h3 class="text-xl font-bold mb-4">Exporting Data</h3>
+                            <p>Exporting dashboard data as ${format}. This is a simulated action.</p>
+                            <button onclick="this.parentElement.parentElement.remove()" class="mt-4 py-2 px-4 rounded-md bg-primary text-white hover:bg-primary-dark">Close</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(messageBox);
+            }
+            document.getElementById('exportJsonBtn').addEventListener('click', async () => { /* ... download logic ... */ });
+            document.getElementById('exportCsvBtn').addEventListener('click', async () => { /* ... download logic ... */ });
+        });
+    </script>
+</body>
+</html>

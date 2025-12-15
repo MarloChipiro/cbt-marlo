@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -6,45 +8,25 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const app = express();
-const PORT =  process.env.PORT;
-const JWT_SECRET = 'm1a2r3l4o5; // Change this to a secure, long, random key!
+const PORT = 3000;
+const JWT_SECRET = 'your-secret-key'; // Change this to a secure, long, random key!
 
 // Middleware setup
-const allowedOrigins = [
-    'https://effulgent-ganache-433653.netlify.app',
-    'http://localhost:8888', // Add for local testing with netlify dev
-    'http://localhost:3000', // Add if you still want to test on the server's port
-];
-
-app.use(cors({
-    origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps or curl)
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) === -1) {
-            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-            return callback(new Error(msg), false);
-        }
-        return callback(null, true);
-    },
-    // IMPORTANT: Allow the methods and headers needed for API calls
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type,Authorization', 
-    credentials: true 
-};	
-// Enable pre-flight across all routes
-app.options('*', cors(corsOptions)); 
-
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(bodyParser.json());
 
 // =======================================================
 // DATABASE CONNECTION
 // =======================================================
-const dbURI = process.env.MONGODB_URI ||'mongodb://localhost:27017/consumer_tracker';
+const DB_URL = process.env.ATLAS_URL;
 
+if (!DB_URL) {
+    console.error("FATAL ERROR: ATLAS_URL environment variable is not set. Check your .env file.");
+    process.exit(1); // Exit if the connection string is missing
+}
 mongoose.connect(dbURI)
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('Could not connect to MongoDB:', err));
+    .then(() => console.log('Successfully connected to MongoDB Atlas'))
+    .catch(err => console.error('Could not connect to MongoDB Atlas:', err));
 
 // =======================================================
 // DEFINE MONGOOSE SCHEMAS
@@ -369,5 +351,6 @@ app.get('/api/activity/csv', authenticateToken, async (req, res) => {
 });
 // Start the server
 app.listen(PORT, () => {
-    console.log(`Server is running on https://cbt-marlo.onrender.com:${PORT}`);
+    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`MongoDB connection string is loaded from .env`);
 });

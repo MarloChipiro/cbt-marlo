@@ -1,0 +1,16 @@
+_id,time,age,count,behaviour,items,userId,__v
+68d4e2041c2db1df42242ded,08:00,15-25,23,purchasing,vegetables,68d4de751c2db1df42242ddb,0
+68d4e2291c2db1df42242df3,09:00,15-25,18,purchasing,bread,68d4de751c2db1df42242ddb,0
+68d4e6d3df3d2e67eb99a5f6,08:00,21-25,12,purchased,fruits,68d4de751c2db1df42242ddb,0
+68d4e6f9df3d2e67eb99a5fc,08:00,21-25,12,purchased,fruits,68d4de751c2db1df42242ddb,0
+68d4e74cdf3d2e67eb99a602,08:00,21-30,8,purchased,utensils,68d4de751c2db1df42242ddb,0
+68d4e991982eb9ac8ff0ef0d,08:00,21-30,5,purchased,fruits,68d4de751c2db1df42242ddb,0
+68d4e9e4982eb9ac8ff0ef13,08:00,31-45,15,purchased,fruits and vegetables,68d4de751c2db1df42242ddb,0
+68d4ea4b982eb9ac8ff0ef19,09:00,31-45,34,purchased,food,68d4de751c2db1df42242ddb,0
+68d4ebc864c9bf5750afe582,08:00,25-35,23,purchased,takeaway food,68d4de751c2db1df42242ddb,0
+68d4ec4564c9bf5750afe58b,08:00,25-35,23,purchased,takeaway food,68d4de751c2db1df42242ddb,0
+68d4f0460922b8db2e1a33e5,08:00,21-25,23,purchased,bread and buns,68d4efee0922b8db2e1a33dd,0
+68d4f0850922b8db2e1a33eb,09:00,21-25,12,purchased,meat pies,68d4efee0922b8db2e1a33dd,0
+68d506783fc60a2160500b20,8am,21-25,6,purchased,phones,68d4efee0922b8db2e1a33dd,0
+68d50c551fee6b7830f6b8b5,8am,21-25,6,purchased,phones,68d50b1d1fee6b7830f6b8aa,0
+68d50f2c1fee6b7830f6b8c1,08:00,21-25,12,browsed,cellphones,68d50b1d1fee6b7830f6b8aa,0

@@ -1,3 +1,7 @@
+
+# =======================================================
+# EXISTING ANDROID/IDE IGNORES (KEEP THESE)
+# =======================================================
 *.iml
 .gradle
 /local.properties
@@ -13,3 +17,17 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# =======================================================
+# NEW: NODE.JS and SECURITY IGNORES (ADD THESE)
+# =======================================================
+# Node.js Dependency Directory
+/node_modules
+
+# Environment Variables (CRITICAL for security)
+.env
+
+# Logs and debug files
+npm-debug.log*
+yarn-debug.log*
+*.log

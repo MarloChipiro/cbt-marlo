@@ -2,3 +2,5 @@ mongodb+srv://chipiromarlo33_db_user:9zhZjqKg7CsGCJST@turningred.rwvw9vg.mongodb
 74.220.48.0/24
 74.220.56.0/24
 https://cbt-marlo.onrender.com
+dc7DjMytaZi0z1Yz
+mongodb+srv://chipiromarlo33_db_user:dc7DjMytaZi0z1Yz@cluster0.zyw14h3.mongodb.net/?appName=Cluster0

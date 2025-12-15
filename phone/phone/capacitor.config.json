@@ -1,0 +1,11 @@
+{
+  "appId": "uk.infy.marlochipiro31.consumer",
+  "appName": "Consumer Behavior Tracker",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "url": "https://marlochipiro31.infy.uk",
+    "cleartext":
+ true
+  }
+}
