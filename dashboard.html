@@ -1,11 +1,10 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consumer Behavior Tracker</title>
-    <script src="http://cdn.tailwindcss.com"></script>
+    <title>Consumer Behavior Tracker - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -19,15 +18,15 @@
             darkMode: 'class'
         }
     </script>
-    <script src="http://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="http://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <link rel="stylesheet" href="http://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="http://cdn.jsdelivr.net/npm/leaflet-extra-markers@1.0.1/dist/js/leaflet.extra-markers.min.js"></script>
-    <script src="http://cdn.jsdelivr.net/npm/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="http://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
-    <link rel="stylesheet" href="http://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
-    <script src="http://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-extra-markers@1.0.1/dist/js/leaflet.extra-markers.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
 
     
     <style>
@@ -84,52 +83,7 @@
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 font-sans leading-normal tracking-normal text-gray-800 dark:text-gray-200">
 
-    <!-- Login/Register Modal -->
-    <div id="authModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50">
-        <div class="relative p-8 bg-white dark:bg-gray-800 w-96 rounded-lg shadow-xl">
-            <h3 class="text-2xl font-bold mb-4 text-center">Login or Register</h3>
-            <form id="authForm" class="space-y-4">
-                <div>
-                    <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Username</label>
-                    <input type="text" id="username" name="username" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-dark focus:ring focus:ring-primary-dark focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600">
-                </div>
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
-                    <input type="password" id="password" name="password" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-dark focus:ring focus:ring-primary-dark focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600">
-                </div>
-                <div class="flex justify-between space-x-2">
-                    <button type="button" id="registerBtn" class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-dark">Register</button>
-                    <button type="submit" id="loginBtn" class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600">Login</button>
-                </div>
-            </form>
-            <p id="authMessage" class="mt-4 text-center text-sm font-medium"></p>
-        </div>
-    </div>
-	
-	<div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm mb-6 border border-gray-100 dark:border-gray-700">
-        <div class="flex flex-wrap items-center justify-between gap-4">
-            <h2 class="text-lg font-bold text-gray-800 dark:text-white">Filter Dashboard</h2>
-            <div class="flex items-center space-x-3">
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 uppercase">Start Date</label>
-                    <input type="date" id="filterStartDate" class="p-2 text-sm border rounded-md dark:bg-gray-700 dark:text-white">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 uppercase">End Date</label>
-                    <input type="date" id="filterEndDate" class="p-2 text-sm border rounded-md dark:bg-gray-700 dark:text-white">
-                </div>
-                <button onclick="applyDateFilter()" class="mt-4 bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-md text-sm font-bold transition">
-                    Apply Filter
-                </button>
-                <button onclick="resetDateFilter()" class="mt-4 text-gray-500 hover:text-gray-700 text-sm font-medium">
-                    Reset
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Dashboard Content -->
-    <div id="dashboard" class="container mx-auto p-4 hidden">
+    <div id="dashboard" class="container mx-auto p-4">
         <header class="flex flex-col sm:flex-row justify-between items-center py-4 mb-8 border-b-2 border-gray-200 dark:border-gray-700">
             <h1 class="text-3xl font-extrabold text-primary mb-4 sm:mb-0">Consumer Dashboard</h1>
             <div class="flex items-center space-x-4">
@@ -141,9 +95,7 @@
             </div>
         </header>
 
-        <!-- Main Metrics Section -->
         <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <!-- Total Consumers Card -->
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
                 <div class="flex items-center justify-between">
                     <div>
@@ -154,7 +106,6 @@
                 </div>
             </div>
 
-            <!-- Active Locations Card -->
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
                 <div class="flex items-center justify-between">
                     <div>
@@ -165,21 +116,18 @@
                 </div>
             </div>
 
-            <!-- Conversion Rate Card -->
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Conversion Rate</p>
-                        <p id="conversionRate" class="text-3xl font-bold mt-1 text-gray-900 dark:text-gray-100">0%</p>
+                        <p id="conversionRate" class="text-3xl font-bold mt-1 text-gray-900 dark:text-gray-100">7.2%</p>
                     </div>
                     <i class="fas fa-chart-line text-primary text-3xl opacity-75"></i>
                 </div>
             </div>
         </section>
 
-        <!-- Charts and Map Section -->
         <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <!-- Hourly Activity Chart -->
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
                 <h2 class="text-xl font-bold mb-4">Hourly Activity</h2>
                 <div class="chart-container">
@@ -187,7 +135,6 @@
                 </div>
             </div>
 
-            <!-- Demographics Chart -->
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
                 <h2 class="text-xl font-bold mb-4">Demographics</h2>
                 <div class="chart-container">
@@ -196,9 +143,7 @@
             </div>
         </section>
 
-        <!-- Recommendations and Overview Map Section -->
         <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <!-- Recommendations Card -->
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
                 <h2 class="text-xl font-bold mb-4">Recommendations</h2>
                 <div class="space-y-4">
@@ -214,7 +159,6 @@
                 </div>
             </div>
 
-            <!-- Overview Map Card -->
             <div class="bg-cream dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
                 <h2 class="text-xl font-bold mb-4">Overview Map</h2>
                 <div class="flex justify-end mb-2 space-x-2">
@@ -227,8 +171,7 @@
                 </div>
             </div>
 		</section>
-			 <!-- Data Management Section -->
-        <section class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+			 <section class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
             <h2 class="text-xl font-bold mb-4">Data Management</h2>
             <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">              
                 <button id="exportCsvBtn" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 py-2 px-4 rounded-lg shadow hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-300 text-sm">Export to CSV</button>
@@ -236,8 +179,6 @@
         </section>
     </div>
 
-    <!-- Modals (Add Data Forms) -->
-    <!-- Add Activity Data Modal -->
     <div id="addActivityModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50 hidden">
         <div class="relative p-8 bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-lg">
             <button class="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300" onclick="closeActivityModal()">
@@ -250,14 +191,8 @@
                 <button type="button" id="addInteractionField" class="text-primary text-sm font-semibold hover:text-primary-dark mt-2">
                 <i class="fas fa-plus-circle mr-1"></i> Add Interaction (Browse/Purchase/Return)
                 </button>
-            <!-- Geolocation Status Message -->
             <p id="geolocationStatus" class="text-sm mb-4 text-center"></p>
             <form id="activityForm" class="space-y-4">
-			    <div>
-                    <label for="activityDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Date</label>
-                    <input type="date" id="activityDate" name="activityDate" readonly 
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 dark:bg-gray-600 cursor-not-allowed focus:ring-0">
-                </div>
                 <div>
                     <label for="activityTime" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Time of Day</label>
                     <select id="activityTime" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-dark focus:ring focus:ring-primary-dark focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600">
@@ -280,7 +215,7 @@
                 <div>
                     <label for="activityLat" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Location Latitude</label>
                     <input type="number" step="any" id="activityLat" name="activityLat" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-dark focus:ring focus:ring-primary-dark focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600">
-                </div>			
+                </div>
                 <div>
                     <label for="activityLon" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Location Longitude</label>
                     <input type="number" step="any" id="activityLon" name="activityLon" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-dark focus:ring focus:ring-primary-dark focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600">
@@ -299,22 +234,21 @@
     </div>
 	
     <script>
+        // CRITICAL: The first check for a token to ensure the user is logged in
+        const initialToken = localStorage.getItem('token');
+        if (!initialToken) {
+            // If no token, redirect to the login page and stop script execution
+            window.location.href = 'index.html'; 
+        }
+		const API_BASE_URL = 'https://cbt-marlo.onrender.com';
+		
         // Store charts, map, and heatmap layers instance globally for updates
-        let allActivityData = []; // <--- Master copy for filtering
-		let hourlyActivityChart, demographicsChart, map;
+        let hourlyActivityChart, demographicsChart, map;
         let heatLayers = {};
         let clusterLayers = {};
         let currentMapMode = 'heatmap'; // 'heatmap' or 'cluster'
         const categoryColors = ['#5D5CDE', '#34D399', '#FBBF24', '#F87171', '#60A5FA', '#8B5CF6'];
 
-    // CRITICAL NEW GLOBAL VARIABLE: Stores the data currently displayed (cleared on Refresh)
-        let localActivityData = {
-            activity: [],
-            demographics: [],
-            dashboardMetrics: { totalConsumers: 0, activeLocations: 0, conversionRate: '0%' },
-            targetKeyDemographics: { targetAgeGroup: 'N/A', keyInteraction: 'N/A', keyCategory: 'N/A' }
-        };
-		
         // ---- API UTILITIES ----
         async function fetchWithAuth(url, options = {}) {
             const token = localStorage.getItem('token');
@@ -331,8 +265,8 @@
             if (response.status === 401 || response.status === 403) {
                 localStorage.removeItem('token');
                 localStorage.removeItem('userId');
-                document.getElementById('authModal').classList.remove('hidden');
-                document.getElementById('dashboard').classList.add('hidden');
+                // CRITICAL: Redirect to login on failed auth check
+                window.location.href = 'index.html'; 
                 throw new Error('Unauthorized');
             }
             return response;
@@ -344,11 +278,6 @@
 			document.getElementById('interaction-inputs').innerHTML = ''; // Clear previous fields
             addInteractionField(); // Add the first interaction field
             getGeolocation();
-			
-			// Auto-generate current date (YYYY-MM-DD)
-			const today = new Date().toISOString().split('T')[0];
-			document.getElementById('activityDate').value = today;
-			
          // Attempt to get current geolocation when the modal is shown
             getGeolocation();
         }
@@ -356,61 +285,40 @@
 
         function addInteractionField() {
             const inputsContainer = document.getElementById('interaction-inputs');
-            const groupId = Date.now(); // Unique ID for this group
             const newField = document.createElement('div');
-            newField.className = 'p-3 bg-gray-50 dark:bg-gray-700 rounded-md border border-gray-200 dark:border-gray-600 mb-4 interaction-group';
-    
+            newField.className = 'p-3 bg-gray-50 dark:bg-gray-700 rounded-md border border-gray-200 dark:border-gray-600';
             newField.innerHTML = `
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs font-bold uppercase text-gray-500">Interaction Group</span>
-                    <button type="button" class="text-red-500 hover:text-red-700 remove-interaction-field"><i class="fas fa-trash"></i></button>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2 mb-3">
+                <div class="flex justify-end">
+                    <button type="button" class="text-red-500 hover:text-red-700 remove-interaction-field"><i class="fas fa-times-circle"></i></button>
+                </div>
+                <div class="space-y-2">
                     <div>
                         <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">Behavior Type</label>
-                        <select name="groupBehaviour" required class="w-full p-2 text-sm border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-white">
+                        <select name="interactionBehaviour" required class="w-full p-2 text-sm border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-white">
                             <option value="Purchasing">Purchasing</option>
                             <option value="Browsing">Browsing</option>
                             <option value="Returning">Returning</option>
                         </select>
                     </div>
                     <div>
+                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">Item Name</label>
+                        <input type="text" name="interactionItem" placeholder="e.g., Tacos, Laptop, T-shirt" required class="mt-1 block w-full text-sm rounded-md border-gray-300 shadow-sm dark:bg-gray-800 dark:border-gray-600">
+                    </div>
+                    <div>
                         <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">Item Category</label>
-                        <select name="groupCategory" required class="w-full p-2 text-sm border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-white">
-                            <option value="Groceries">Groceries</option>
+                        <select name="interactionCategory" required class="w-full p-2 text-sm border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-white">
                             <option value="Electronics">Electronics</option>
                             <option value="Apparel">Apparel</option>
+                            <option value="Groceries">Groceries</option>
                             <option value="Home Goods">Home Goods</option>
                             <option value="Other">Other</option>
                         </select>
                     </div>
                 </div>
-                <div class="item-list space-y-2" id="items-${groupId}">
-                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">Items</label>
-                    <div class="flex space-x-2">
-                        <input type="text" name="itemName" placeholder="Item name..." required class="flex-1 p-2 text-sm rounded-md border border-gray-300 dark:bg-gray-800 dark:border-gray-600">
-                    </div>
-                </div>
-                <button type="button" onclick="addItemToGroup('${groupId}')" class="mt-2 text-xs text-blue-500 font-semibold hover:underline">
-                    + Add another item to this category
-                </button>
             `;
             inputsContainer.appendChild(newField);
             newField.querySelector('.remove-interaction-field').addEventListener('click', () => newField.remove());
         }
-
-        // Helper to add a new item row within a specific group
-        function addItemToGroup(groupId) {
-            const container = document.getElementById(`items-${groupId}`);
-            const newItemDiv = document.createElement('div');
-            newItemDiv.className = 'flex space-x-2';
-            newItemDiv.innerHTML = `
-                <input type="text" name="itemName" placeholder="Item name..." required class="flex-1 p-2 text-sm rounded-md border border-gray-300 dark:bg-gray-800 dark:border-gray-600">
-                <button type="button" onclick="this.parentElement.remove()" class="text-gray-400 hover:text-red-500"><i class="fas fa-times"></i></button>
-            `;
-            container.appendChild(newItemDiv);
-        }
-		
         // Custom message box to replace alert()
         function showMessage(message, isError = false) {
             const messageBox = document.createElement('div');
@@ -524,8 +432,8 @@
         function initOverviewMap() {
             if (map) { map.remove(); }
             map = L.map('map', {center: [34.052235, -118.243683], zoom: 12});
-            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
         }
 
@@ -618,8 +526,8 @@
                 // Heat Layer Creation (using unique colors)
                 const color = colors[index % colors.length];
                 const heatLayer = L.heatLayer(groupedData[category].heat, {
-                    radius: 25,
-                    blur: 15,
+                    radius: 18,
+                    blur: 12,
                     gradient: { 0.4: color, 0.6: color, 1.0: color }
                 });
                 // Store the layer instance globally
@@ -730,19 +638,19 @@
             // Add specific, realistic recommendations based on the key interaction
             if (keyInteraction === 'Browsing') {
                 recommendation += `<p class="p-3 mt-4 text-sm bg-yellow-50 border border-yellow-200 rounded-md">
-                    <strong>🎯 Recommendation:</strong> Since **Browsing** is dominant, focus on **in-store conversion tactics**. Deploy targeted point-of-sale displays or offer limited-time deals (e.g., flash sales) near the **${keyCategory}** area to convert browsing interest from the **${targetAgeGroup}** group into purchases.
+                    <strong>識 Recommendation:</strong> Since **Browsing** is dominant, focus on **in-store conversion tactics**. Deploy targeted point-of-sale displays or offer limited-time deals (e.g., flash sales) near the **${keyCategory}** area to convert browsing interest from the **${targetAgeGroup}** group into purchases.
                 </p>`;
             } else if (keyInteraction === 'Purchasing') {
                 recommendation += `<p class="p-3 mt-4 text-sm bg-green-50 border border-green-200 rounded-md">
-                    <strong>🎯 Recommendation:</strong> High **Purchasing** volume suggests satisfaction. Focus on **maximising Average Transaction Value**. Promote complementary products (e.g., accessories or warranties) and use loyalty programs aimed at the **${targetAgeGroup}** group for **${keyCategory}** to encourage repeat business.
+                    <strong>識 Recommendation:</strong> High **Purchasing** volume suggests satisfaction. Focus on **maximising Average Transaction Value**. Promote complementary products (e.g., accessories or warranties) and use loyalty programs aimed at the **${targetAgeGroup}** group for **${keyCategory}** to encourage repeat business.
                 </p>`;
             } else if (keyInteraction === 'Returning') {
                 recommendation += `<p class="p-3 mt-4 text-sm bg-red-50 border border-red-200 rounded-md">
-                    <strong>🎯 Recommendation:</strong> High **Returning** volume suggests an opportunity to improve service or product quality perception. Initiate a brief feedback survey at the point of return for the **${targetAgeGroup}** group, specifically on **${keyCategory}**, to mitigate negative sentiment and retain the customer.
+                    <strong>識 Recommendation:</strong> High **Returning** volume suggests an opportunity to improve service or product quality perception. Initiate a brief feedback survey at the point of return for the **${targetAgeGroup}** group, specifically on **${keyCategory}**, to mitigate negative sentiment and retain the customer.
                 </p>`;
             } else {
                 recommendation += `<p class="p-3 mt-4 text-sm bg-indigo-50 border border-indigo-200 rounded-md">
-                    <strong>🎯 Recommendation:</strong> Focus on understanding and leveraging the dominant **${keyInteraction}** behavior observed in the **${targetAgeGroup}** demographic around the **${keyCategory}** items.
+                    <strong>識 Recommendation:</strong> Focus on understanding and leveraging the dominant **${keyInteraction}** behavior observed in the **${targetAgeGroup}** demographic around the **${keyCategory}** items.
                 </p>`;
             }
 
@@ -752,11 +660,11 @@
             // 1. Reset Metrics to 0/N/A
             document.getElementById('totalConsumers').textContent = '0';
             document.getElementById('activeLocations').textContent = '0';
-            document.getElementById('conversionRate').textContent = '0';
+            document.getElementById('conversionRate').textContent = 'N/A';
     
             // 2. Robustly Clear Charts by replacing the entire data object
             if (hourlyActivityChart) {
-			                // Hourly Chart Reset
+			    // Hourly Chart Reset
                 hourlyActivityChart.data = {
                     labels: [],
                     datasets: [{ 
@@ -766,8 +674,8 @@
                         tension: 0.1 
                     }]				
             };
-			            hourlyActivityChart.update();
-		        }
+			hourlyActivityChart.update();
+		}
 
             if (demographicsChart) {
                 // Demographics Chart Reset (Ensuring correct type and colors are maintained)
@@ -787,148 +695,40 @@
 			
             // 3. Clear Recommendations
             document.getElementById('peakHours').textContent = 'N/A';
-            document.getElementById('targetDemographicsOutput').innerHTML = '<p class="text-sm text-gray-500">Data cleared. Awaiting new activity entry!</p>';
+            document.getElementById('targetDemographicsOutput').innerHTML = '<p class="text-sm text-gray-500">Data cleared. Refreshing...</p>';
 
             // 4. Clear Map layers and reset legend
             clearMapLayers(); // This existing function removes layers and clears stored data
             const legend = document.getElementById('mapLegend');
-            legend.innerHTML = '<h4 class="font-bold mb-2">Item Categories</h4><p class="text-xs text-gray-500 dark:text-gray-400">Dashboard data has been cleared.</p>';
-        
-            // CRITICAL STEP: When refreshing, reset the local data buffer to an empty set
-            localActivityData.activity = [];
-            localActivityData.demographics = [];
-            localActivityData.dashboardMetrics = { totalConsumers: 0, activeLocations: 0, conversionRate: '0%' };
-            localActivityData.targetKeyDemographics = { targetAgeGroup: 'N/A', keyInteraction: 'N/A', keyCategory: 'N/A' };
-        }		
-		
-		function resetDashboardState() {
-		    // 1. Close and reset the Add Activity Modal form
-			document.getElementById('addActivityModal').classList.add('hidden');
-			document.getElementById('activityForm').reset();
-			
-			// 2. Clear dynamic interaction fields and re-add one for a clean slate
-			const interactionInputs = document.getElementById('interaction-inputs');
-			if (interactionInputs) {
-			    interactionInputs.innerHTML = '';
-				addInteractionField();
-			}
-		}	
-		
-        // NEW FUNCTION: Handles the actual display update from the local buffer
-        function updateDashboardDisplay(data) {
-            document.getElementById('totalConsumers').textContent = data.dashboardMetrics.totalConsumers;
-            document.getElementById('activeLocations').textContent = data.dashboardMetrics.activeLocations;
-            document.getElementById('conversionRate').textContent = data.dashboardMetrics.conversionRate;
-
-            updateHourlyChart(data.activity);
-            updateDemographicsChart(data.demographics);
-            updateRecommendations(data.activity);
-            updateMap(data.activity);
-            updateTargetDemographics(data.targetKeyDemographics);			
+            legend.innerHTML = '<h4 class="font-bold mb-2">Item Categories</h4><p class="text-xs text-gray-500 dark:text-gray-400">Data cleared. Refreshing...</p>';
         }
-
-// ---- DATA AND METRICS CALCULATOR ----
-        
-        // NEW FUNCTION: Calculates all metrics, demographics, and recommendations client-side
-        // This ensures the dashboard reflects ONLY the data present in the provided activity array.
-        function calculateClientSideStats(activityData) {
-            let totalConsumers = 0;
-            const locations = new Set();
-            const ageCounts = {};
-            let totalInteractions = 0;
-            let purchaseCount = 0;
-            let interactionCounts = {};
-            let categoryCounts = {};
-
-            // Pass 1: Gather raw numbers for metrics and demographics
-            activityData.forEach(activity => {
-                totalConsumers += activity.count;
-                locations.add(`${activity.lat},${activity.lon}`);
-
-                // Demographics
-                const ageGroup = activity.age; // Assuming 'age' is a string like '25-34'
-                ageCounts[ageGroup] = (ageCounts[ageGroup] || 0) + activity.count;
-
-                // Interactions for Conversion Rate/Key Demographics
-                activity.interactions.forEach(interaction => {
-                    totalInteractions++;
-                    if (interaction.type === 'Purchasing') {
-                        purchaseCount++;
-                    }
-                    interactionCounts[interaction.type] = (interactionCounts[interaction.type] || 0) + 1;
-                    categoryCounts[interaction.category] = (categoryCounts[interaction.category] || 0) + 1;
-                });
-            });
-
-            // Calculate Metrics
-            const activeLocations = locations.size;
-            const conversionRate = totalInteractions > 0 
-                ? ((purchaseCount / totalInteractions) * 100).toFixed(1) + '%'
-                : '0%';
-            
-            // Calculate Demographics
-            const demographics = Object.keys(ageCounts).map(age_group => ({
-                age_group,
-                count: ageCounts[age_group]
-            })).sort((a, b) => b.count - a.count);
-
-            // Calculate Recommendations (Target Demographic/Interaction)
-            let targetAgeGroup = demographics.length > 0 ? demographics[0].age_group : 'N/A';
-            let keyInteraction = Object.keys(interactionCounts).sort((a, b) => interactionCounts[b] - interactionCounts[a])[0] || 'N/A';
-            let keyCategory = Object.keys(categoryCounts).sort((a, b) => categoryCounts[b] - categoryCounts[a])[0] || 'N/A';
-
-            return {
-                dashboardMetrics: { totalConsumers, activeLocations, conversionRate },
-                demographics: demographics,
-                targetKeyDemographics: { targetAgeGroup, keyInteraction, keyCategory }
-            };
-        }
-		
-		function applyDateFilter() {
-            const start = document.getElementById('filterStartDate').value;
-            const end = document.getElementById('filterEndDate').value;
-
-            if (!start || !end) {
-                showMessage("Please select both a start and end date.", true);
-                return;
-            }
-
-            // 1. Filter the Master Copy based on the date string (YYYY-MM-DD)
-            const filteredActivities = allActivityData.filter(act => {
-                return act.date >= start && act.date <= end;
-            });
-
-            // 2. Re-calculate all stats (Metrics, Charts, Demographics) for this subset
-            const filteredStats = calculateClientSideStats(filteredActivities);
-    
-            // 3. Push to UI
-            updateDashboardDisplay({
-                activity: filteredActivities,
-                ...filteredStats
-            });
-        }
-		
-		function resetDateFilter() {
-		    document.getElementById('filterStartDate').value = '';
-			document.getElementById('filterEndDate').value = '';
-			
-			// Return to the original localActivityData (the full set)
-			updateDashboardDisplay(localActivityData);
-		}
-
         // ---- DATA AND API HANDLERS ----
         async function fetchDashboardData() {
             try {
-                const response = await fetchWithAuth('http://localhost:3000/api/dashboard');
+                const response = await fetchWithAuth('https://cbt-marlo.onrender.com/api/dashboard');
                 let data = await response.json();
-                
-				allActivityData = data.activity; // Store the master copy here
-                // Store the full response data locally (used during login/initial load)
-                localActivityData = data; 
-                
-                // Now, update the dashboard using this new local data
-                updateDashboardDisplay(localActivityData);
-				
+
+                // Fallback data for testing if backend is not providing location data
+                if (data.activity.length === 0) {
+                    data.activity = [
+                        { time: '09:30', lat: 34.0522, lon: -118.2437, interactions: [{ type: 'Browsing', item: 'Tacos', category: 'Food' }], count: 15, age: '25-34' },
+                        { time: '12:00', lat: 34.0532, lon: -118.2450, interactions: [{ type: 'Purchasing', item: 'Shirt', category: 'Apparel' }], count: 20, age: '18-24' },
+                        { time: '13:00', lat: 34.0550, lon: -118.2420, interactions: [{ type: 'Purchasing', item: 'Coffee', category: 'Groceries' }], count: 10, age: '35-44' },
+                        { time: '17:45', lat: 34.0515, lon: -118.2460, interactions: [{ type: 'Browsing', item: 'Tickets', category: 'Entertainment' }], count: 5, age: '18-24' },
+                        { time: '18:30', lat: 34.0528, lon: -118.2445, interactions: [{ type: 'Purchasing', item: 'Pizza', category: 'Food' }], count: 18, age: '25-34' },
+                        { time: '20:00', lat: 34.0540, lon: -118.2410, interactions: [{ type: 'Browsing', item: 'Shoes', category: 'Apparel' }], count: 12, age: '45-54' },
+                    ];
+                }
+
+                document.getElementById('totalConsumers').textContent = data.dashboardMetrics.totalConsumers;
+                document.getElementById('activeLocations').textContent = data.dashboardMetrics.activeLocations;
+                document.getElementById('conversionRate').textContent = data.dashboardMetrics.conversionRate;
+
+                updateHourlyChart(data.activity);
+                updateDemographicsChart(data.demographics);
+                updateRecommendations(data.activity);
+                updateMap(data.activity);
+				updateTargetDemographics(data.targetKeyDemographics);
             } catch (error) {
                 console.error('Failed to fetch dashboard data:', error);
             }
@@ -940,169 +740,96 @@
             const lat = parseFloat(document.getElementById('activityLat').value);
             const lon = parseFloat(document.getElementById('activityLon').value);
     
-            const groups = document.querySelectorAll('.interaction-group');
+            const interactionRows = document.querySelectorAll('#interaction-inputs > div');
             const interactions = [];
 
-            groups.forEach(group => {
-                const behaviour = group.querySelector('[name="groupBehaviour"]').value;
-                const category = group.querySelector('[name="groupCategory"]').value;
-                const itemInputs = group.querySelectorAll('[name="itemName"]');
+        // Collect all dynamic interactions
+        interactionRows.forEach(row => {
+                const behaviour = row.querySelector('[name="interactionBehaviour"]').value;
+                const item = row.querySelector('[name="interactionItem"]').value;
+                const category = row.querySelector('[name="interactionCategory"]').value;
 
-                itemInputs.forEach(input => {
-				    const itemName = input.value.trim();
-                    if (itemName !== "") {
-                        // Each item is pushed as an individual interaction object
-                        interactions.push({ 
-                            type: behaviour, 
-                            item: itemName, 
-                            category: category 
-                        });
-                    }
-                });
+                if (behaviour && item && category) {
+                    interactions.push({ type: behaviour, item, category });
+                } 
             });
 
             if (interactions.length === 0) {
-                showMessage("Please add at least one item.", true);
+                showMessage("Please add at least one interaction (Browsing, Purchasing, or Returning).", true);
                 return;
             }
 
             const newActivity = {
-			    date: document.getElementById('activityDate').value,
                 time: document.getElementById('activityTime').value,
                 lat: lat,
                 lon: lon,
-                count: parseInt(document.getElementById('activityCount').value),
+                count: parseInt(document.getElementById('activityCount').value), // Still useful for consumer count at the location
                 age: document.getElementById('activityAge').value,           
-                interactions: interactions 
+                interactions: interactions // THE NEW ARRAY
             };
-
+    
             try {
-                const response = await fetchWithAuth('http://localhost:3000/api/activity', {
-                    method: 'POST',
-                    body: JSON.stringify(newActivity)
+                const response = await fetchWithAuth('https://cbt-marlo.onrender.com/api/activity', {
+                method: 'POST',
+                body: JSON.stringify(newActivity)
                 });
+                const result = await response.json();
+                console.log(result.message);
+                await fetchDashboardData();
+                closeActivityModal();
         
-                if (response.ok) {
-                    // Update local state and dashboard
-                    localActivityData.activity.push(newActivity); 
-                    const updatedStats = calculateClientSideStats(localActivityData.activity);
-                    Object.assign(localActivityData, updatedStats);
-                    updateDashboardDisplay(localActivityData);
-            
-                    // UI Cleanup
-                    closeActivityModal();
-                    form.reset();
-                    document.getElementById('interaction-inputs').innerHTML = '';
-                    addInteractionField(); 
-                    if (!isNaN(lat) && !isNaN(lon)) map.flyTo([lat, lon], 15);
+                // Reset the form and the dynamic interactions container
+                form.reset(); 
+                document.getElementById('interaction-inputs').innerHTML = '';
+                addInteractionField(); // Add one blank field for convenience
+ 
+                if (!isNaN(lat) && !isNaN(lon)) {
+                    map.flyTo([lat, lon], 15);
                 }
             } catch (error) {
                 console.error('Error adding activity:', error);
+                showMessage('Failed to add activity data. See console for details.', true);
             } 
         }
+
         // ---- INITIALIZATION AND EVENT LISTENERS ----
         document.addEventListener('DOMContentLoaded', function() {
-            initCharts();
-            initOverviewMap();
-
-            const token = localStorage.getItem('token');
-            if (token) {
-                document.getElementById('authModal').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-                map.invalidateSize();
-                fetchDashboardData();
-            } else {
-                document.getElementById('authModal').classList.remove('hidden');
+            // Check again in case the initial check failed for some reason, 
+            // though the script should have stopped.
+            if (!localStorage.getItem('token')) {
+                window.location.href = 'index.html';
+                return;
             }
 
-            document.getElementById('authForm').addEventListener('submit', async function(e) {
-                e.preventDefault();
-                const username = document.getElementById('username').value;
-                const password = document.getElementById('password').value;
-                const authMessage = document.getElementById('authMessage');
+            initCharts();
+            initOverviewMap();
+            map.invalidateSize();
+            fetchDashboardData();
 
-                try {
-                    const response = await fetch('http://localhost:3000/api/login', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ username, password })
-                    });
-                    const result = await response.json();
-                    if (response.ok) {
-                        localStorage.setItem('token', result.token);
-                        localStorage.setItem('userId', result.userId);
-                        document.getElementById('authModal').classList.add('hidden');
-                        document.getElementById('dashboard').classList.remove('hidden');
-                        map.invalidateSize();
-                        fetchDashboardData();
-                    } else {
-                        authMessage.textContent = result.message;
-                        authMessage.className = 'mt-4 text-center text-sm font-medium text-red-500';
-                    }
-                } catch (error) {
-                    authMessage.textContent = 'Failed to connect to server.';
-                    authMessage.className = 'mt-4 text-center text-sm font-medium text-red-500';
-                }
-            });
-
-            document.getElementById('registerBtn').addEventListener('click', async function() {
-                const username = document.getElementById('username').value;
-                const password = document.getElementById('password').value;
-                const authMessage = document.getElementById('authMessage');
-
-                try {
-                    const response = await fetch('http://localhost:3000/api/register', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ username, password })
-                    });
-                    const result = await response.json();
-                    authMessage.textContent = result.message;
-                    authMessage.className = 'mt-4 text-center text-sm font-medium ' + (response.ok ? 'text-green-500' : 'text-red-500');
-                } catch (error) {
-                    authMessage.textContent = 'Failed to connect to server.';
-                    authMessage.className = 'mt-4 text-center text-sm font-medium text-red-500';
-                }
-            });
 
             document.getElementById('logoutBtn').addEventListener('click', function() {
                 localStorage.removeItem('token');
                 localStorage.removeItem('userId');
-                document.getElementById('dashboard').classList.add('hidden');
-                document.getElementById('authModal').classList.remove('hidden');
-                document.getElementById('peakHours').textContent = '';
+                // CRITICAL: Redirect back to the login page
+                window.location.href = 'index.html'; 
             });
 
             document.getElementById('addActivityBtn').addEventListener('click', showActivityModal);
             document.getElementById('activityForm').addEventListener('submit', submitActivityData);
-			
 			document.getElementById('refreshBtn').addEventListener('click', () => {
-			    // 1. Ensure all input forms are closed and reset
-				    resetDashboardState();
-				
-                // 2. Clear Dashboard Display (Visual reset to 0s and N/A)
-				        clearDashboardDisplay();
-				                            	
-            });
+                clearDashboardDisplay(); // Clear the old data immediately for user feedback
+                // Use setTimeout to ensure the browser has time to render the cleared state
+                // before the new data fetch begins, preventing old data from "flashing."
+				setTimeout(() => {
+				    fetchDashboardData();
+				}, 50);	
+                });
             document.getElementById('toggleMapViewBtn').addEventListener('click', toggleMapView);
             document.getElementById('addInteractionField').addEventListener('click', addInteractionField);
-			
-            function exportData(format) {
-                const messageBox = document.createElement('div');
-                messageBox.innerHTML = `
-                    <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50">
-                        <div class="relative p-8 bg-white dark:bg-gray-800 rounded-lg shadow-xl w-80 text-center">
-                            <h3 class="text-xl font-bold mb-4">Exporting Data</h3>
-                            <p>Exporting dashboard data as ${format}. This is a simulated action.</p>
-                            <button onclick="this.parentElement.parentElement.remove()" class="mt-4 py-2 px-4 rounded-md bg-primary text-white hover:bg-primary-dark">Close</button>
-                        </div>
-                    </div>
-                `;
-                document.body.appendChild(messageBox);
-            }            
+			            
            document.getElementById('exportCsvBtn').addEventListener('click', async () => {
     try {
-        const response = await fetchWithAuth('http://localhost:3000/api/activity/csv');
+        const response = await fetchWithAuth('https://cbt-marlo.onrender.com/api/activity/csv');
         
         if (!response.ok) {
             throw new Error('Server responded with an error during CSV export.');
@@ -1110,7 +837,6 @@
 
         // Get the CSV text data from the response
         const csvData = await response.text();
-        
         // Create a blob and trigger a download
         const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
         const url = window.URL.createObjectURL(blob);
@@ -1122,136 +848,14 @@
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url); // Clean up
         
-        showMessage("Export successful! consumer_activity.csv downloaded.", false);
+        showMessage("Export successful! consumer_activity_flattened.csv downloaded.", false);
     } catch (error) {
         console.error('Export failed:', error);
         showMessage("Export failed. Check server console for details or ensure the server is running.", true);
     }
-});
         });
     </script>
 </body>
-=======
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consumer Behavior Tracker - Login</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#5D5CDE',
-                        'primary-dark': '#4B4BC1',
-                    }
-                }
-            },
-            darkMode: 'class'
-        }
-    </script>
-</head>
-<body class="bg-gray-100 dark:bg-gray-900 font-sans leading-normal tracking-normal text-gray-800 dark:text-gray-200">
-
-    <div id="authContainer" class="min-h-screen flex items-center justify-center">
-        <div class="relative p-8 bg-white dark:bg-gray-800 w-96 rounded-lg shadow-xl">
-            <h3 class="text-2xl font-bold mb-4 text-center">Login or Register</h3>
-            <form id="authForm" class="space-y-4">
-                <div>
-                    <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Username</label>
-                    <input type="text" id="username" name="username" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-dark focus:ring focus:ring-primary-dark focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600">
-                </div>
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
-                    <input type="password" id="password" name="password" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-dark focus:ring focus:ring-primary-dark focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600">
-                </div>
-                <div class="flex justify-between space-x-2">
-                    <button type="button" id="registerBtn" class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-dark">Register</button>
-                    <button type="submit" id="loginBtn" class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600">Login</button>
-                </div>
-            </form>
-            <p id="authMessage" class="mt-4 text-center text-sm font-medium"></p>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if user is already logged in (token exists) and redirect immediately
-            const token = localStorage.getItem('token');
-            if (token) {
-                // Redirects to the dashboard if a token is present
-                window.location.href = 'dashboard.html';
-                return; // Stop execution
-            }
-
-            document.getElementById('authForm').addEventListener('submit', async function(e) {
-                e.preventDefault();
-                const username = document.getElementById('username').value;
-                const password = document.getElementById('password').value;
-                const authMessage = document.getElementById('authMessage');
-
-                try {
-                    const response = await fetch('https://cbt-marlo.onrender.com/api/login', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ username, password })
-                    });
-                    const result = await response.json();
-                    if (response.ok) {
-                        localStorage.setItem('token', result.token);
-                        localStorage.setItem('userId', result.userId);
-                        // CRITICAL: Redirect to the new dashboard page
-                        window.location.href = 'dashboard.html'; 
-                    } else {
-                        authMessage.textContent = result.message;
-                        authMessage.className = 'mt-4 text-center text-sm font-medium text-red-500';
-                    }
-                } catch (error) {
-                    authMessage.textContent = 'Failed to connect to server.';
-                    authMessage.className = 'mt-4 text-center text-sm font-medium text-red-500';
-                }
-            });
-
-            document.getElementById('registerBtn').addEventListener('click', async function() {
-                const username = document.getElementById('username').value;
-                const password = document.getElementById('password').value;
-                const authMessage = document.getElementById('authMessage');
-
-                try {
-                    const response = await fetch('https://cbt-marlo.onrender.com/api/register', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ username, password })
-                    });
-                    const result = await response.json();
-                    authMessage.textContent = result.message;
-                    authMessage.className = 'mt-4 text-center text-sm font-medium ' + (response.ok ? 'text-green-500' : 'text-red-500');
-
-                    // Optional: If registration is successful, automatically log in/redirect
-                    if (response.ok) {
-                        // Attempt to log in immediately after successful registration
-                        const loginResponse = await fetch('https://cbt-marlo.onrender.com/api/login', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ username, password })
-                        });
-                        const loginResult = await loginResponse.json();
-                        if (loginResponse.ok) {
-                            localStorage.setItem('token', loginResult.token);
-                            localStorage.setItem('userId', loginResult.userId);
-                            window.location.href = 'dashboard.html'; 
-                        }
-                    }
-
-                } catch (error) {
-                    authMessage.textContent = 'Failed to connect to server.';
-                    authMessage.className = 'mt-4 text-center text-sm font-medium text-red-500';
-                }
-            });
-        });
-    </script>
-</body>
->>>>>>> 91dc1713739a928fc87d3b21cf55f30571b582f2
 </html>
+
+
